@@ -1,0 +1,33 @@
+{
+  "name": "fibi",
+  "version": "0.0.1",
+  "description": "Tool to transform design tokens from figma to any format for any platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamvaskiv/fibi.git"
+  },
+  "keywords": [
+    "figma",
+    "tokens",
+    "design",
+    "design-tokens"
+  ],
+  "author": "Vitaliy Vaskiv",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iamvaskiv/fibi/issues"
+  },
+  "homepage": "https://github.com/iamvaskiv/fibi#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "lodash.camelcase": "^4.3.0",
+    "lodash.kebabcase": "^4.1.1",
+    "lodash.snakecase": "^4.1.1",
+    "node-fetch": "^2.6.0",
+    "tinycolor2": "^1.4.1"
+  }
+}
