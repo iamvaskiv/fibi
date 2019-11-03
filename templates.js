@@ -24,5 +24,12 @@ $${token.name}-letter-spacing: ${token.letterSpacing}px;`,
     tokens: {
       "Colors"    : token => `    <color name="${camelCase(token.name)}">#${token.color.toHex8().substr(6) + token.color.toHex8().substr(0, 6)}</color>`
     }
+  },
+  "colors.json": {
+    header: "{",
+    footer: "}",
+    tokens: {
+      "Colors": token => `  "${snakeCase(token.name)}": "${token.color.toHex8String()}",`
+    }
   }
 };
