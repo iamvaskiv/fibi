@@ -144,7 +144,8 @@ class fibi {
         }
       });
 
-      const content = `${temp.header}\n${designTokens.join("\n")}\n${temp.footer}`;
+      const content = temp.template(designTokens.join("\n"));
+
 
       fs.writeFile(file.path + file.name, content, err => {
         if (err) console.log('Error writing file', err)
