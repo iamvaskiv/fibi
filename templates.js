@@ -12,9 +12,10 @@ module.exports = {
       "Spacings"  : token => `$${token.name}: ${token.value}px;`,
       "Typography": token => `$${token.name}-font-family: ${token.fontFamily};
 $${token.name}-font-size: ${token.fontSize}px;
+$${token.name}-font-weight: ${token.fontWeight};
 $${token.name}-line-height: ${token.lineHeight}px;
 $${token.name}-letter-spacing: ${token.letterSpacing}px;`,
-      "Shadows"   : token => `$${token.name}: ${token.inner ? 'inset' : '' } ${token.offset.x}px ${token.offset.y}px ${token.color.toRgbString()};`
+      "Shadows"   : token => `$${token.name}: ${token.inner ? 'inset' : '' } ${token.offset.x}px ${token.offset.y}px ${token.blur}px ${token.color.toRgbString()};`
     }
   },
   "styles.xml": {
@@ -28,7 +29,7 @@ ${tokens}
       "Typography": token => `    <dimen name="${camelCase(token.name)}FontSize">${token.fontSize}sp</dimen>
     <dimen name="${camelCase(token.name)}LineHeight">${token.lineHeight}sp</dimen>
     <dimen name="${camelCase(token.name)}LineSpacingExtra">${token.lineHeight - token.fontSize}sp</dimen>
-    <dimen name="${camelCase(token.name)}LetterSpacing">${token.letterSpacing/token.fontSize}</dimen>`,
+    <dimen name="${camelCase(token.name)}LetterSpacing">${(token.letterSpacing/token.fontSize).toFixed(2)}</dimen>`,
     }
   },
   "fonts.xml": {
@@ -38,7 +39,7 @@ ${tokens}
     tokens: {
       "Typography": token => `<style name="${camelCase(token.name)}">
     <item name="android:textSize">@dimen/${camelCase(token.name)}FontSize</item>
-    <item name="android:fontFamily">@font/${snakeCase(token.name)}_${token.fontWeight}</item>
+    <item name="android:fontFamily">@font/${snakeCase(token.name)}</item>
     <item name="android:lineSpacingExtra">@dimen/${camelCase(token.name)}LineSpacingExtra</item>
     <item name="android:letterSpacing">@dimen/${camelCase(token.name)}LetterSpacing</item>
 </style>`
@@ -60,13 +61,20 @@ ${tokens}
       "Spacings": token => `    static let ${camelCase(token.name)} = CGFloat(${token.value})`,
     }
   },
-  "colors.json": {
+  "styles.json": {
     template: tokens => `{
 ${tokens}
 }`,
     tokens: {
-      "Colors": token => `"${snakeCase(token.name)}": "${token.color.toHex8String()}",`
-    }
+      "Colors": token => `"${snakeCase(token.name)}": "${token.color.toHex8String()}",`,
+      "Typography": token => `"${snakeCase(token.name + '_font_family')}": "${token.fontFamily}",
+  "${snakeCase(token.name + '_font_weight')}": "${token.fontWeight}",
+  "${snakeCase(token.name + '_font_size')}": "${token.fontSize}",
+  "${snakeCase(token.name + '_line_height')}": "${token.lineHeight}",
+  "${snakeCase(token.name + '_letter_spacing')}": "${token.letterSpacing}",`,
+    },
+    indent: "  ",
+    post: (str) => str.replace(/(^,)|(,$)/g, ""),
   }
 };
 

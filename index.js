@@ -59,9 +59,15 @@ class fibi {
       page.children.forEach(artboard => {
 
         if (artboard.name[0] === '_') return;
+        if (!artboard.children) return;
+
         artboard.children.forEach(group => {
 
+
+
           if (group.type !== 'GROUP') return;
+          if (group.children.length < 1) return;
+          
           group.children.forEach(layer => {
 
             if (layer.name[0] !== '$') return;
@@ -99,7 +105,7 @@ class fibi {
           fontSize     : style.fontSize,
           fontWeight   : style.fontWeight,
           lineHeight   : style.lineHeightPx,
-          letterSpacing: style.letterSpacing
+          letterSpacing: style.letterSpacing !== 0 ? (style.letterSpacing).toFixed(1) : style.letterSpacing
         });
 
       case "Spacings":
@@ -108,9 +114,11 @@ class fibi {
         });
 
       case "Shadows":
+        
         return Object.assign(defaultToken, {
           inner: layer.effects[0].type === "INNER_SHADOW",
           offset: layer.effects[0].offset,
+          blur: layer.effects[0].radius,
           color: tinycolor.fromRatio({
             r: layer.effects[0].color.r,
             g: layer.effects[0].color.g,
@@ -127,6 +135,11 @@ class fibi {
 
   async build() {
     const allTokens = await this.getTokens();
+
+    const defaultTemp = {
+      indent: "",
+      post: str => str,
+    };
     
     this.files.forEach(file => {
       let tokens = allTokens;
@@ -135,7 +148,7 @@ class fibi {
         tokens = allTokens.filter(token => file.tokenTypes.includes(token.type));
       }
 
-      const temp         = this.templates[file.template];
+      const temp         = Object.assign(defaultTemp, this.templates[file.template]);
       const designTokens = [];
 
       tokens.forEach(token => {
@@ -144,7 +157,7 @@ class fibi {
         }
       });
 
-      const content = temp.template(designTokens.join("\n"));
+      const content = temp.template(temp.post(temp.indent + designTokens.join("\n" + temp.indent)));
 
 
       fs.writeFile(file.path + file.name, content, err => {
