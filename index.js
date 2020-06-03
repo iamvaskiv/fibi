@@ -67,13 +67,17 @@ class fibi {
 
           if (group.type !== 'GROUP') return;
           if (group.children.length < 1) return;
-          
-          group.children.forEach(layer => {
 
-            if (layer.name[0] !== '$') return;
-            const formatted = this.formatToken(layer, group.name);
-            if (formatted) tokens.push(formatted);
-          });
+          this.findToken(group.children, group, tokens);
+          
+          // group.children.forEach(layer => {
+
+            
+
+          //   if (layer.name[0] !== '$') return;
+          //   const formatted = this.formatToken(layer, group.name);
+          //   if (formatted) tokens.push(formatted);
+          // });
         });
       })
     });
@@ -81,10 +85,24 @@ class fibi {
     return tokens;
   }
 
+  findToken(layers, group, tokens) {
+    layers.forEach(layer => {
+      if (layer.name[0] !== '$') {
+        if (layer.children === undefined || layer.children.length < 1) return;
+        this.findToken(layer.children, group, tokens);
+
+        return;
+      };
+
+      const formatted = this.formatToken(layer, group.name);
+      if (formatted) tokens.push(formatted);
+    });
+  }
+
   formatToken(layer, type) {
     const { name, style } = layer;
     const defaultToken = {
-      name: name.replace('$', ''),
+      name: name.trim().replace('$', ''),
       type: type
     };
 
