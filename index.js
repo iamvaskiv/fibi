@@ -113,11 +113,12 @@ class fibi {
             r: layer.fills[0].color.r,
             g: layer.fills[0].color.g,
             b: layer.fills[0].color.b,
-            a: layer.fills[0].color.a,
+            a: layer.fills[0].opacity || 1,
           })
         });
       
       case "Typography":
+        
         return Object.assign(defaultToken, {
           fontFamily   : style.fontFamily,
           fontSize     : style.fontSize,
@@ -134,14 +135,18 @@ class fibi {
       case "Shadows":
         
         return Object.assign(defaultToken, {
-          inner: layer.effects[0].type === "INNER_SHADOW",
-          offset: layer.effects[0].offset,
-          blur: layer.effects[0].radius,
-          color: tinycolor.fromRatio({
-            r: layer.effects[0].color.r,
-            g: layer.effects[0].color.g,
-            b: layer.effects[0].color.b,
-            a: layer.effects[0].color.a,
+          shadows: layer.effects.map((shadow) => {
+            return {
+              inner: shadow.type === "INNER_SHADOW",
+              offset: shadow.offset,
+              blur: shadow.radius,
+              color: tinycolor.fromRatio({
+                r: shadow.color.r,
+                g: shadow.color.g,
+                b: shadow.color.b,
+                a: shadow.color.a,
+              })
+            };
           })
         });
 

@@ -15,7 +15,21 @@ $${token.name}-font-size: ${token.fontSize}px;
 $${token.name}-font-weight: ${token.fontWeight};
 $${token.name}-line-height: ${token.lineHeight}px;
 $${token.name}-letter-spacing: ${token.letterSpacing}px;`,
-      "Shadows"   : token => `$${token.name}: ${token.inner ? 'inset' : '' } ${token.offset.x}px ${token.offset.y}px ${token.blur}px ${token.color.toRgbString()};`
+      "Shadows"   : token => `$${token.name}: ` + token.shadows.map(shadow => `${shadow.inner ? 'inset' : '' } ${shadow.offset.x}px ${shadow.offset.y}px ${shadow.blur}px ${shadow.color.toRgbString()}`).join(', ') + ';'
+      
+    }
+  },
+  "styles.less": {
+    template: tokens => `${tokens}`,
+    tokens: {
+      "Colors"    : token => `@${token.name}: ${token.color.toRgbString()};`,
+      "Spacings"  : token => `@${token.name}: ${token.value}px;`,
+      "Typography": token => `@${token.name}-font-family: ${token.fontFamily};
+@${token.name}-font-size: ${token.fontSize}px;
+@${token.name}-font-weight: ${token.fontWeight};
+@${token.name}-line-height: ${token.lineHeight}px;
+@${token.name}-letter-spacing: ${token.letterSpacing}px;`,
+      "Shadows"   : token => `@${token.name}: ${token.inner ? 'inset' : '' } ${token.offset.x}px ${token.offset.y}px ${token.blur}px ${token.color.toRgbString()}`
     }
   },
   "styles.xml": {
