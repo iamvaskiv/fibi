@@ -113,7 +113,7 @@ class fibi {
             r: layer.fills[0].color.r,
             g: layer.fills[0].color.g,
             b: layer.fills[0].color.b,
-            a: layer.fills[0].opacity || 1,
+            a: layer.fills[0].opacity === undefined ? 1 : layer.fills[0].opacity,
           })
         });
       
