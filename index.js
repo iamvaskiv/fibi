@@ -108,6 +108,8 @@ class fibi {
 
     switch (type) {
       case "Colors":
+        if (!layer.fills.length) return Object.assign(defaultToken, { color: tinycolor.fromRatio({ r: 1, g: 1, b: 1, a: 0 })});
+
         return Object.assign(defaultToken, {
           color: tinycolor.fromRatio({
             r: layer.fills[0].color.r,

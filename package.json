@@ -1,6 +1,6 @@
 {
   "name": "fibi",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Tool to transform design tokens from figma to any format for any platform",
   "main": "index.js",
   "scripts": {
